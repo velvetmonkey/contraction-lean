@@ -3,51 +3,61 @@
 [![Lean 4](https://img.shields.io/badge/Lean-4.28.0-blue)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-v4.28.0-purple)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Proofs](https://img.shields.io/badge/proofs-pending-lightgrey)](Contraction)
+[![Proofs](https://img.shields.io/badge/proofs-proven%20%2F%200%20sorry-brightgreen)](ContractionLean)
 
-Lean 4 formal proofs of contraction theory: Banach fixed point theorem, geometric convergence rates, composition rules, and differential contraction.
+Lean 4 formal proofs of contraction theory: Banach fixed point theorem, geometric convergence rates, composition rules, and Lohmiller-Slotine differential contraction.
 
-**Zero sorry statements.**
+**Zero sorry statements.** Zero new axioms.
 
 ## Why it matters
 
 Contraction theory (Lohmiller and Slotine, 1998) provides a unified framework for proving exponential convergence of nonlinear dynamical systems. A contracting system forgets its initial conditions at an exponential rate -- any two trajectories converge toward each other regardless of where they started. This is a stronger and more composable property than Lyapunov stability.
 
-Contraction theory underlies distributed synchronisation, neural dynamics, reinforcement learning, and control theory. This library machine-checks the core results: Banach fixed point with explicit rates, composition rules for building contracting systems, and the differential (Jacobian) condition for ODEs.
+Contraction theory underlies distributed synchronisation, neural dynamics, reinforcement learning, and control theory. This library machine-checks the core results: Banach fixed point with explicit rates, composition rules for building contracting systems, and the Lohmiller-Slotine differential (Jacobian) condition for ODEs.
 
-## Planned project structure
+## Project structure
 
 ```
-Contraction/
-├── Defs.lean                    — Contracting maps, contraction constant, metric setting
-├── BanachFixed.lean             — Unique fixed point + geometric convergence rate
-├── CompositionRules.lean        — Series, parallel, feedback combinations
-└── DifferentialContraction.lean — Jacobian condition for ODE systems
+ContractionLean/
+├── Defs.lean                    — IsContracting c f (wraps Mathlib's ContractingWith), basic API
+├── BanachFixed.lean             — Unique fixed point, geometric convergence, iterate convergence
+├── CompositionRules.lean        — Composition and iteration of contracting maps
+└── DifferentialContraction.lean — Derivative-based contraction, Gronwall decay, trajectory convergence
+ContractionLean.lean             — Root module re-exporting all four
 ```
 
-## Planned theorem inventory
+## Theorem inventory
 
-### Layer 1 — Metric contraction
+### Layer 1 — Definitions and metric contraction
 
-| # | Theorem | Statement |
-|---|---------|-----------|
-| 1 | `contracting_map_def` | d(f(x), f(y)) ≤ c * d(x, y) for c ∈ [0,1) |
-| 2 | `banach_fixed_point` | Unique fixed point x* exists |
-| 3 | `geometric_convergence` | d(fⁿ(x), x*) ≤ cⁿ/(1-c) * d(f(x), x) |
-| 4 | `composition_contracting` | c₁-contracting ∘ c₂-contracting is (c₁*c₂)-contracting |
+| # | Name | Statement |
+|---|------|-----------|
+| 1 | `IsContracting` | c < 1 and f is c-Lipschitz (wraps `ContractingWith`) |
+| 2 | `exists_unique_fixedPoint` | Unique fixed point ∃! x*, f(x*) = x* |
+| 3 | `geometric_convergence` | dist(fⁿ(x), x*) ≤ cⁿ/(1-c) · dist(x, f(x)) |
+| 4 | `tendsto_iterate_fixedPoint` | Iterates converge: fⁿ(x) → x* |
 
-### Layer 2 — Smooth contraction
+### Layer 2 — Composition rules
 
-| # | Theorem | Statement |
-|---|---------|-----------|
-| 5 | `smooth_contraction_of_deriv` | \|f'(x)\| ≤ c < 1 implies f is c-contracting |
-| 6 | `differential_contraction` | Symmetric Jacobian ½(J + Jᵀ) ≼ -λI implies ‖x₁(t)-x₂(t)‖ ≤ e^(-λt)‖x₁(0)-x₂(0)‖ |
+| # | Name | Statement |
+|---|------|-----------|
+| 5 | `IsContracting.comp` | c₁-contracting ∘ c₂-contracting = (c₁·c₂)-contracting |
+| 6 | `IsContracting.iterate` | n-th iterate of c-contracting is cⁿ-contracting |
+
+### Layer 3 — Differential contraction (Lohmiller-Slotine)
+
+| # | Name | Statement |
+|---|------|-----------|
+| 7 | `IsContracting.of_deriv_le` | ‖f'(x)‖ ≤ c < 1 implies f is c-contracting (via MVT) |
+| 8 | `exponential_decay_of_deriv_le` | u'(t) ≤ -μ·u(t) implies u(t) ≤ u(0)·e^(-μt) (Gronwall) |
+| 9 | `trajectory_convergence` | ‖x₁(t) - x₂(t)‖ ≤ e^(-μt)·‖x₁(0) - x₂(0)‖ under contraction differential inequality |
 
 ## Key technical highlights
 
-- Explicit geometric convergence rate, not just existence
-- Composition rules make contraction theory modular: build large contracting systems from small ones
-- Differential contraction bridges algebraic (Jacobian) condition to trajectory behaviour
+- `IsContracting` wraps Mathlib's `ContractingWith` for a clean API while reusing its infrastructure
+- `geometric_convergence` gives explicit rate, not just fixed-point existence
+- `exponential_decay_of_deriv_le` proved via antitone auxiliary v(t) = u(t)·e^(μt), using `antitoneOn_of_deriv_nonpos`
+- `of_deriv_le` uses `lipschitzWith_of_nnnorm_deriv_le` (MVT-based Lipschitz bound)
 - Standard axioms only: `propext`, `Classical.choice`, `Quot.sound`
 - Zero `sorry`, zero `admit`
 
@@ -59,6 +69,10 @@ Contraction/
 ## Paper
 
 Companion paper forthcoming. To be published on Zenodo.
+
+## Cite
+
+Zenodo DOI forthcoming.
 
 ## Related work
 
