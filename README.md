@@ -19,9 +19,9 @@ Contraction theory underlies distributed synchronisation, neural dynamics, reinf
 
 ```
 Contraction/
-├── Defs.lean              — Contracting maps, contraction constant, metric setting
-├── BanachFixed.lean       — Unique fixed point + geometric convergence rate
-├── CompositionRules.lean  — Series, parallel, feedback combinations
+├── Defs.lean                    — Contracting maps, contraction constant, metric setting
+├── BanachFixed.lean             — Unique fixed point + geometric convergence rate
+├── CompositionRules.lean        — Series, parallel, feedback combinations
 └── DifferentialContraction.lean — Jacobian condition for ODE systems
 ```
 
@@ -67,6 +67,10 @@ Companion paper forthcoming. To be published on Zenodo.
 - [hopfield-lean](https://github.com/velvetmonkey/hopfield-lean) — Lean 4 Hopfield attractor convergence
 - [nesterov-lean](https://github.com/velvetmonkey/nesterov-lean) — Lean 4 Nesterov accelerated gradient descent
 - [lotka-volterra-lean](https://github.com/velvetmonkey/lotka-volterra-lean) — Lean 4 Lotka-Volterra Hamiltonian conservation
+
+## Acknowledgements
+
+Proofs in this library were generated using [Aristotle](https://aristotle.harmonic.fun), an AI proof assistant for Lean 4 and Mathlib. The proof discipline -- zero sorry, every Mathlib lemma name `#check`ed before use -- was specified by the author and enforced by the Lean type checker.
 
 ## Author
 
