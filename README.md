@@ -4,6 +4,7 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-v4.28.0-purple)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Proofs](https://img.shields.io/badge/proofs-proven%20%2F%200%20sorry-brightgreen)](ContractionLean)
+[![Paper](https://img.shields.io/badge/Zenodo-20474762-blue)](https://zenodo.org/records/20474762)
 
 Lean 4 formal proofs of contraction theory: Banach fixed point theorem, geometric convergence rates, composition rules, and Lohmiller-Slotine differential contraction.
 
@@ -68,11 +69,13 @@ ContractionLean.lean             — Root module re-exporting all four
 
 ## Paper
 
-Companion paper forthcoming. To be published on Zenodo.
+**contraction-lean: Formal Proofs of Contraction Theory, Banach Fixed Point, and Exponential Convergence in Lean 4**  
+Ben Cassie (2026). Zenodo.  
+https://zenodo.org/records/20474762
 
 ## Cite
 
-Zenodo DOI forthcoming.
+Cassie, B. (2026). *contraction-lean: Formal Proofs of Contraction Theory, Banach Fixed Point, and Exponential Convergence in Lean 4*. Zenodo. https://zenodo.org/records/20474762.
 
 ## Related work
 
