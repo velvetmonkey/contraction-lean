@@ -1,5 +1,6 @@
 # contraction-lean
 
+[![thread](https://img.shields.io/badge/%F0%9F%A7%B5-how%20it%20works-1DA1F2)](https://x.com/thevelvetmonke)
 [![Lean 4](https://img.shields.io/badge/Lean-4.28.0-blue)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-v4.28.0-purple)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -10,7 +11,15 @@ Lean 4 formal proofs of contraction theory: Banach fixed point theorem, geometri
 
 **Zero sorry statements.** Zero new axioms.
 
-## Why it matters
+## What this is, and why it matters
+
+This library formalizes several layers of contraction theory, from Banach fixed points to exponential convergence of trajectories. Its headline theorem, `trajectory_convergence`, proves that two continuous trajectories approach each other at rate `exp(-mu*t)` when their distance is differentiable and obeys the contraction differential inequality.
+
+The explicit rate is obtained through a machine-checked Gronwall argument: the distance multiplied by `exp(mu*t)` is shown to be nonincreasing. The library also wraps Mathlib's contraction mapping machinery to prove a unique fixed point, convergence of iterates with a geometric bound, and composition and iteration rules.
+
+The scope of the differential result is narrower than a full Lohmiller-Slotine formalization. The distance inequality is an assumption. The development does not derive it from a symmetric-Jacobian condition, construct ODE solutions, or prove that a given nonlinear system satisfies the required contraction condition.
+
+## Background and motivation
 
 Contraction theory (Lohmiller and Slotine, 1998) provides a unified framework for proving exponential convergence of nonlinear dynamical systems. A contracting system forgets its initial conditions at an exponential rate -- any two trajectories converge toward each other regardless of where they started. This is a stronger and more composable property than Lyapunov stability.
 
