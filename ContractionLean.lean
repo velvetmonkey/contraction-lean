@@ -2,3 +2,5 @@ import ContractionLean.Defs
 import ContractionLean.BanachFixed
 import ContractionLean.CompositionRules
 import ContractionLean.DifferentialContraction
+
+import ContractionLean.MovingFixedPoint

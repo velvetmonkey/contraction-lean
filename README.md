@@ -103,3 +103,37 @@ Ben Cassie · [@thevelvetmonke](https://x.com/thevelvetmonke)
 ## Part of the Lean proof corpus
 
 One of a family of small, machine-checked Lean 4 developments. Index: [velvetmonkey/lean](https://github.com/velvetmonkey/lean) ([live index](https://velvetmonkey.github.io/lean)).
+
+## Moving fixed point
+
+The root module re-exports `ContractionLean.MovingFixedPoint`, which studies maps `T n` that change at every step,
+fixed points `xs n` of those maps, and an orbit satisfying
+`z (n+1) = T n (z n)`. Write `e n = dist (z n) (xs n)`. The common Lipschitz
+constant `K` is a nonnegative real (`ℝ≥0` in Lean); drift bounds are real numbers.
+
+- `MovingFixedPoint.tracking_step`: in a metric space, if every `T n` is
+  `K`-Lipschitz, each `xs n` is its fixed point, and successive fixed points
+  have distance at most `δ`, then `e (n+1) ≤ K * e n + δ`.
+- `MovingFixedPoint.tracking_bound`: under the same assumptions and `K < 1`,
+  `e n ≤ K^n * e 0 + δ / (1-K)` for every natural number `n`.
+- `MovingFixedPoint.tracking_eventually`: under those assumptions, for every
+  `ε > 0`, eventually `e n ≤ δ / (1-K) + ε`. These three results require no
+  completeness assumption because the fixed points are supplied.
+- `MovingFixedPoint.fixedPoint_drift_of_map_drift`: if every map is
+  `ContractingWith K`, the fixed points are supplied, and
+  `dist (T (n+1) x) (T n x) ≤ C` for every `n` and `x`, then successive fixed
+  points have distance at most `C / (1-K)`. This uses Mathlib's
+  `ContractingWith.dist_fixedPoint_fixedPoint_of_dist_le'`.
+- `MovingFixedPoint.tracking_bound_of_map_drift`: on a nonempty complete metric
+  space, with the same contraction and uniform map-drift hypotheses and the
+  orbit recurrence, the error relative to the canonical fixed points is at most
+  `K^n * e 0 + C / (1-K)^2`. The fixed-point drift is obtained from Mathlib's
+  `ContractingWith.fixedPoint_lipschitz_in_map`.
+- `MovingFixedPoint.identity_tracking_unbounded`: for any `δ > 0`, identity maps
+  on the real numbers are `1`-Lipschitz and fix `xs n = n * δ`, whose drift is
+  `δ`. The constant orbit `z n = 0` has error exceeding every fixed real bound
+  `B` at some natural number `n`. Thus strict contraction cannot be dropped
+  from the uniform or eventual result. Its one-step error also exceeds the
+  zero-drift estimate, showing that the drift hypothesis in `tracking_step`
+  matters. A checked zero-drift example shows why this negative control needs
+  `δ > 0`.
